@@ -3,6 +3,7 @@ public class BookFactory {
 
     //Return book based on type
     public Book createBook(String type, String name, String author, String year){
+        //Select Type to create
         switch (type) {
             case "Comic":
                 bookID = Integer.toString((Integer.parseInt(bookID) + 1));
