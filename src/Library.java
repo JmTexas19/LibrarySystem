@@ -1,12 +1,29 @@
 import java.util.ArrayList;
 
-public class Library {
+public class Library implements LibraryIF{
     public ArrayList<Book> bookList = new ArrayList<>();
-    BookFactory bookFactory = new BookFactory();
+    public BookFactory bookFactory = new BookFactory();
 
+    //Allow visitors to checkout books
+    public Book getBook(String bookID){
+        for(Book b : bookList){
+            if(bookID.equals(b.bookID)){
+                return b;
+            }
+        }
+
+        //No book with that ID found
+        System.out.println("No book with that ID found");
+        return null;
+    }
+
+
+    //MAIN
     public static void main(String args[]){
         //Test stuff here
         Library lib = new Library();
+
+        //Create Books
         lib.bookList.add(lib.bookFactory.createBook("Comic", "Avengers", "Marvel", "1999"));
         lib.bookList.add(lib.bookFactory.createBook("Comic", "Avengers2", "Marvel", "1999"));
         lib.bookList.add(lib.bookFactory.createBook("Comic", "Avengers3", "Marvel", "1999"));
@@ -28,7 +45,7 @@ public class Library {
         lib.bookList.add(lib.bookFactory.createBook("Textbook", "Calculus 1", "Bob Barker", "2005"));
         lib.bookList.add(lib.bookFactory.createBook("Textbook", "Calculus 2", "Bob Barker", "2006"));
 
-
-
+        Visitor v = new Visitor(lib);
+        v.checkoutBook("4");
     }
 }
