@@ -1,13 +1,16 @@
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 
-public class Library implements FullLibraryIF{
+public class Library implements FullLibraryIF {
     public ArrayList<Book> bookList = new ArrayList<>();
     public BookFactory bookFactory = new BookFactory();
 
     //Allow visitors to checkout books
-    public Book getBook(String bookID){
-        for(Book b : bookList){
-            if(bookID.equals(b.bookID)){
+    public Book getBook(String bookID) {
+        for (Book b : bookList) {
+            if (bookID.equals(b.bookID)) {
                 return b;
             }
         }
@@ -18,23 +21,39 @@ public class Library implements FullLibraryIF{
     }
 
     //Create Book
-    public void createBook(String type, String name, String author, String year){
+    public void createBook(String type, String name, String author, String year) {
         boolean exists = false;
         //If book already exists, add copy.
-        for(Book b : bookList){
-            if(b.type.equals(type) && b.name.equals(name) && b.author.equals(author) && b.year.equals(year)){
+        for (Book b : bookList) {
+            if (b.type.equals(type) && b.name.equals(name) && b.author.equals(author) && b.year.equals(year)) {
                 b.copies++;
                 System.out.println("Book already exists, added copy");
                 exists = true;
             }
         }
 
-        if(!exists) this.bookList.add(bookFactory.createBook(type, name, author, year));
+        if (!exists) this.bookList.add(bookFactory.createBook(type, name, author, year));
     }
 
+    //Search Books
+    public ArrayList<Book> searchLibrary(String search) {
+        ArrayList<Book> resultsList = new ArrayList<>();
+
+        //Search all books and return matching. O(n)
+        for (Book b : bookList) {
+            if (b.name.contains(search) || b.year.contains(search) || b.author.contains(search) || b.type.contains(search)) {
+                resultsList.add(b);
+            }
+        }
+
+        //SORT LIST BY NAME
+        Collections.sort(resultsList, Comparator.comparing(o -> o.name));
+
+        return resultsList;
+    }
 
     //MAIN
-    public static void main(String args[]){
+    public static void main(String args[]) {
         //Test stuff here
         Library lib = new Library();
 
@@ -62,5 +81,6 @@ public class Library implements FullLibraryIF{
 
         Visitor v = new Visitor(lib);
         v.checkoutBook("4");
+        lib.searchLibrary("Marvel");
     }
 }
