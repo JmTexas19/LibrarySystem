@@ -1,14 +1,13 @@
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 public class Library implements FullLibraryIF {
-    public ArrayList<Book> bookList = new ArrayList<>();
-    public ArrayList<ObserverIF> observerList = new ArrayList<>();
-    public BookFactory bookFactory = new BookFactory();
+    private ArrayList<Book> bookList = new ArrayList<>();
+    private ArrayList<ObserverIF> observerList = new ArrayList<>();
+    private BookFactory bookFactory = new BookFactory();
 
     //Get book from library
-    public Book getBook(String bookID) {
+    private Book getBook(String bookID) {
         for (Book b : bookList) {
             if (bookID.equals(b.bookID)) {
                 return b;
@@ -59,11 +58,11 @@ public class Library implements FullLibraryIF {
         Book book = getBook(bookID);
 
         //Reserve
-        if(book.copies > 0){
+        if(book != null && book.copies > 0){
             System.out.println("Book has copies available... Checking out instead");
             checkoutBook(u, book.bookID);
         }
-        else if(book != null && !u.reserveList.contains(book)){
+        else if(!u.reserveList.contains(book)){
             //Register as observer
             if(!observerList.contains(u)){
                 observerList.add(u);
@@ -82,10 +81,7 @@ public class Library implements FullLibraryIF {
 
         if(book != null && u.reserveList.contains(book)){
             //Remove as observer
-            if(observerList.contains(u)){
-                observerList.remove(u);
-            }
-
+            observerList.remove(u);
             u.reserveList.remove(book);
         }
         else{
@@ -138,7 +134,7 @@ public class Library implements FullLibraryIF {
         resultsList = filter.filterResults(resultsList);
 
         //Sort lists by name
-        Collections.sort(resultsList, Comparator.comparing(o -> o.name));
+        resultsList.sort(Comparator.comparing(o -> o.name));
         return resultsList;
     }
 
