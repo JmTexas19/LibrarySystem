@@ -1,8 +1,7 @@
 import java.util.ArrayList;
 
 //Regular user for library
-public class Visitor {
-    private ArrayList<Book> checkoutList = new ArrayList<>();
+public class Visitor extends User{
     private LibraryIF lib;
 
     public Visitor(Library lib){
@@ -11,12 +10,7 @@ public class Visitor {
 
     //Checkout Books for visitor by using library
     public void checkoutBook(String bookID){
-        Book book = lib.checkoutBook(bookID);
-
-        //Check null
-        if(book != null){
-            checkoutList.add(book);
-        }
+        lib.checkoutBook(this, bookID);
     }
 
     //Return books
@@ -25,12 +19,16 @@ public class Visitor {
 
         //Return to library
         if(book != null) {
-            lib.receiveBook(book.bookID);
-            checkoutList.remove(book);
+            lib.receiveBook(this, book.bookID);
         }
         else{
             System.out.println("No book with that ID exists, can't return");
         }
+    }
+
+    //Reserve Book
+    public void reserveBook(String bookID){
+        lib.reserveBook(this, bookID);
     }
 
     //Get book from checkoutList

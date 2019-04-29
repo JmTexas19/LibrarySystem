@@ -4,6 +4,7 @@ import java.util.Comparator;
 
 public class Library implements FullLibraryIF {
     public ArrayList<Book> bookList = new ArrayList<>();
+    public ArrayList<User> UserList = new ArrayList<>();
     public BookFactory bookFactory = new BookFactory();
 
     //Get book from library
@@ -20,21 +21,25 @@ public class Library implements FullLibraryIF {
     }
 
     //Get book checked out by visitors
-    public Book checkoutBook(String bookID){
+    public void checkoutBook(User u, String bookID){
         Book book = getBook(bookID);
+
+        //If User is not registered, register
+        if(!UserList.contains(u)){
+            UserList.add(u);
+        }
 
         if(book != null){
             book.copies--;
-            return book;
+            u.checkoutList.add(book);
         }
         else{
             System.out.println("No copies for book left");
-            return null;
         }
     }
 
     //Receive books from users
-    public void receiveBook(String bookID){
+    public void receiveBook(User u, String bookID){
         Book book = getBook(bookID);
 
         if(book != null){
@@ -42,6 +47,28 @@ public class Library implements FullLibraryIF {
         }
         else{
             System.out.println("We don't store that book");
+        }
+    }
+
+    //Reserve Book
+    public void reserveBook(User u, String bookID){
+        //If visitor is not registered, register
+        if(!UserList.contains(u)){
+            UserList.add(u);
+        }
+
+        Book book = getBook(bookID);
+
+        //Reserve
+        if(book.copies > 0){
+            System.out.println("Book has copies available... Checking out instead");
+            checkoutBook(u, book.bookID);
+        }
+        else if(book != null && !u.reserveList.contains(book)){
+            u.reserveList.add(book);
+        }
+        else{
+            System.out.println("No book with that ID found or book already reserved");
         }
     }
 
@@ -135,6 +162,8 @@ public class Library implements FullLibraryIF {
         librarian.createBook("Textbook", "Calculus 3", "Bob Barker", "2006");
         librarian.removeBook("8");
         librarian.removeBook("9");
+
+        v.reserveBook("4");
 
     }
 }
