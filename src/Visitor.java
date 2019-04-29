@@ -36,16 +36,6 @@ public class Visitor extends User {
         lib.unReserveBook(this, bookID);
     }
 
-    //Get book from checkoutList
-    private Book getBook(String bookID){
-        for(Book b : checkoutList){
-            if(b.bookID.equals(bookID)){
-                return b;
-            }
-        }
-        return null;
-    }
-
     //Notify User
     public void notifyUser(String bookName){
         System.out.println("The book " + bookName + " has copies available.");

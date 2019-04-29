@@ -1,9 +1,5 @@
-import java.util.ArrayList;
-
 //Manages Library
 public class Librarian extends User{
-    private ArrayList<Book> checkoutList = new ArrayList<>();
-    private ArrayList<Book> reserveList = new ArrayList<>();
     private FullLibraryIF lib;
 
     public Librarian(Library lib){
@@ -36,20 +32,5 @@ public class Librarian extends User{
     //Delete book from library
     public void removeBook(String bookID){
         lib.removeBook(bookID);
-    }
-
-    //Get book from checkoutList
-    private Book getBook(String bookID){
-        for(Book b : checkoutList){
-            if(b.bookID.equals(bookID)){
-                return b;
-            }
-        }
-        return null;
-    }
-
-    //Notify User
-    public void notifyUser(String bookName){
-        System.out.println("The book " + bookName + " has copies available.");
     }
 }
