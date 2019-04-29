@@ -61,6 +61,18 @@ public class Library implements FullLibraryIF {
         if (!exists) this.bookList.add(bookFactory.createBook(type, name, author, year));
     }
 
+    //Remove Book
+    public void removeBook(String bookID){
+        Book book = getBook(bookID);
+
+        if(book != null){
+            bookList.remove(book);
+        }
+        else{
+            System.out.println("No book with that ID found");
+        }
+    }
+
     //Search Books
     public ArrayList<Book> searchLibrary(String search) {
         ArrayList<Book> resultsList = new ArrayList<>();
@@ -118,5 +130,11 @@ public class Library implements FullLibraryIF {
         v.returnBook("1");
         v.returnBook("3");
         v.returnBook("6");
+
+        Librarian librarian = new Librarian(lib);
+        librarian.createBook("Textbook", "Calculus 3", "Bob Barker", "2006");
+        librarian.removeBook("8");
+        librarian.removeBook("9");
+
     }
 }
