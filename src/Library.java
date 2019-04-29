@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -7,7 +6,7 @@ public class Library implements FullLibraryIF {
     public ArrayList<Book> bookList = new ArrayList<>();
     public BookFactory bookFactory = new BookFactory();
 
-    //Allow visitors to checkout books
+    //Get book from library
     public Book getBook(String bookID) {
         for (Book b : bookList) {
             if (bookID.equals(b.bookID)) {
@@ -18,6 +17,32 @@ public class Library implements FullLibraryIF {
         //No book with that ID found
         System.out.println("No book with that ID found");
         return null;
+    }
+
+    //Get book checked out by visitors
+    public Book checkoutBook(String bookID){
+        Book book = getBook(bookID);
+
+        if(book != null){
+            book.copies--;
+            return book;
+        }
+        else{
+            System.out.println("No copies for book left");
+            return null;
+        }
+    }
+
+    //Receive books from users
+    public void receiveBook(String bookID){
+        Book book = getBook(bookID);
+
+        if(book != null){
+            book.copies++;
+        }
+        else{
+            System.out.println("We don't store that book");
+        }
     }
 
     //Create Book
@@ -57,7 +82,7 @@ public class Library implements FullLibraryIF {
     }
 
     //MAIN
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         //Test stuff here
         Library lib = new Library();
 
@@ -84,7 +109,14 @@ public class Library implements FullLibraryIF {
         lib.createBook("Textbook", "Calculus 2", "Bob Barker", "2006");
 
         Visitor v = new Visitor(lib);
+        v.checkoutBook("1");
         v.checkoutBook("4");
+        v.checkoutBook("7");
+        v.checkoutBook("3");
+
         lib.searchLibrary("Marvel");
+        v.returnBook("1");
+        v.returnBook("3");
+        v.returnBook("6");
     }
 }

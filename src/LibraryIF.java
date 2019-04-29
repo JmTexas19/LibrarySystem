@@ -1,3 +1,4 @@
 public interface LibraryIF {
-    Book getBook(String bookID);
+    Book checkoutBook(String bookID);
+    void receiveBook(String bookID);
 }
