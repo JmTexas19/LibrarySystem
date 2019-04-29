@@ -23,6 +23,7 @@ public class Library implements FullLibraryIF {
     //Create Book
     public void createBook(String type, String name, String author, String year) {
         boolean exists = false;
+
         //If book already exists, add copy.
         for (Book b : bookList) {
             if (b.type.equals(type) && b.name.equals(name) && b.author.equals(author) && b.year.equals(year)) {
@@ -46,9 +47,12 @@ public class Library implements FullLibraryIF {
             }
         }
 
-        //SORT LIST BY NAME
-        Collections.sort(resultsList, Comparator.comparing(o -> o.name));
+        //Filters
+        ANDFilter filter = new ANDFilter(new filterComic());
+        resultsList = filter.filterResults(resultsList);
 
+        //Sort lists by name
+        Collections.sort(resultsList, Comparator.comparing(o -> o.name));
         return resultsList;
     }
 
