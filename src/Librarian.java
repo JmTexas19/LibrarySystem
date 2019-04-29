@@ -29,6 +29,11 @@ public class Librarian extends User{
         lib.createBook(type, name, author, year);
     }
 
+    //Edit book
+    public void editBook(String bookID){
+        lib.editBook(bookID);
+    }
+
     //Delete book from library
     public void removeBook(String bookID){
         lib.removeBook(bookID);

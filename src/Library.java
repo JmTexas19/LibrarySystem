@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Scanner;
 
 public class Library implements FullLibraryIF {
     private ArrayList<Book> bookList = new ArrayList<>();
@@ -118,6 +119,34 @@ public class Library implements FullLibraryIF {
         }
     }
 
+    //Edit Book
+    public void editBook(String bookID){
+        Book book = getBook(bookID);
+
+        if(book != null){
+            Scanner scanner = new Scanner(System.in);
+            String name, author, year;
+            //Get each attribute of book
+            System.out.println("Name");
+            name = scanner.nextLine();
+            System.out.println("Author");
+            author = scanner.nextLine();
+            System.out.println("Year");
+            year = scanner.nextLine();
+
+            //Replace
+            book.name = name;
+            book.author = author;
+            book.year = year;
+
+            //Close scanner
+            scanner.close();
+        }
+        else{
+            System.out.println("No book with that ID found");
+        }
+    }
+
     //Search Books
     public ArrayList<Book> searchLibrary(String search) {
         ArrayList<Book> resultsList = new ArrayList<>();
@@ -169,5 +198,7 @@ public class Library implements FullLibraryIF {
         v2.checkoutBook("4");
         v.reserveBook("4");
         v.unReserveBook("4");
+
+        librarian.editBook("1");
     }
 }
