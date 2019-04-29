@@ -4,7 +4,7 @@ import java.util.Comparator;
 
 public class Library implements FullLibraryIF {
     public ArrayList<Book> bookList = new ArrayList<>();
-    public ArrayList<User> UserList = new ArrayList<>();
+    public ArrayList<ObserverIF> observerList = new ArrayList<>();
     public BookFactory bookFactory = new BookFactory();
 
     //Get book from library
@@ -24,11 +24,6 @@ public class Library implements FullLibraryIF {
     public void checkoutBook(User u, String bookID){
         Book book = getBook(bookID);
 
-        //If User is not registered, register
-        if(!UserList.contains(u)){
-            UserList.add(u);
-        }
-
         if(book != null){
             book.copies--;
             u.checkoutList.add(book);
@@ -44,6 +39,15 @@ public class Library implements FullLibraryIF {
 
         if(book != null){
             book.copies++;
+
+            //Notify users who reserved book
+            for(ObserverIF user : observerList){
+                for(Book b : user.getReserveList()){
+                    if(b.bookID.equals(bookID)){
+                        user.notifyUser(b.name);
+                    }
+                }
+            }
         }
         else{
             System.out.println("We don't store that book");
@@ -52,11 +56,6 @@ public class Library implements FullLibraryIF {
 
     //Reserve Book
     public void reserveBook(User u, String bookID){
-        //If visitor is not registered, register
-        if(!UserList.contains(u)){
-            UserList.add(u);
-        }
-
         Book book = getBook(bookID);
 
         //Reserve
@@ -65,12 +64,35 @@ public class Library implements FullLibraryIF {
             checkoutBook(u, book.bookID);
         }
         else if(book != null && !u.reserveList.contains(book)){
+            //Register as observer
+            if(!observerList.contains(u)){
+                observerList.add(u);
+            }
+
             u.reserveList.add(book);
         }
         else{
             System.out.println("No book with that ID found or book already reserved");
         }
     }
+
+    //UnReserve Book
+    public void unReserveBook(User u, String bookID){
+        Book book = getBook(bookID);
+
+        if(book != null && u.reserveList.contains(book)){
+            //Remove as observer
+            if(observerList.contains(u)){
+                observerList.remove(u);
+            }
+
+            u.reserveList.remove(book);
+        }
+        else{
+            System.out.println("No book with that ID found or book isn't reserved");
+        }
+    }
+
 
     //Create Book
     public void createBook(String type, String name, String author, String year) {
@@ -148,6 +170,8 @@ public class Library implements FullLibraryIF {
         lib.createBook("Textbook", "Calculus 2", "Bob Barker", "2006");
 
         Visitor v = new Visitor(lib);
+        Visitor v2 = new Visitor(lib);
+
         v.checkoutBook("1");
         v.checkoutBook("4");
         v.checkoutBook("7");
@@ -163,7 +187,8 @@ public class Library implements FullLibraryIF {
         librarian.removeBook("8");
         librarian.removeBook("9");
 
+        v2.checkoutBook("4");
         v.reserveBook("4");
-
+        v.unReserveBook("4");
     }
 }

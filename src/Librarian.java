@@ -47,4 +47,9 @@ public class Librarian extends User{
         }
         return null;
     }
+
+    //Notify User
+    public void notifyUser(String bookName){
+        System.out.println("The book " + bookName + " has copies available.");
+    }
 }

@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 //Regular user for library
-public class Visitor extends User{
+public class Visitor extends User {
     private LibraryIF lib;
 
     public Visitor(Library lib){
@@ -31,6 +31,11 @@ public class Visitor extends User{
         lib.reserveBook(this, bookID);
     }
 
+    //UnReserve Book
+    public void unReserveBook(String bookID){
+        lib.unReserveBook(this, bookID);
+    }
+
     //Get book from checkoutList
     private Book getBook(String bookID){
         for(Book b : checkoutList){
@@ -39,5 +44,10 @@ public class Visitor extends User{
             }
         }
         return null;
+    }
+
+    //Notify User
+    public void notifyUser(String bookName){
+        System.out.println("The book " + bookName + " has copies available.");
     }
 }
