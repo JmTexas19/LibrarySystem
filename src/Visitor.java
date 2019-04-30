@@ -9,12 +9,12 @@ public class Visitor extends User {
     }
 
     //Checkout Books for visitor by using library
-    public void checkoutBook(String bookID){
+    public void checkoutBook(String bookID) throws InterruptedException {
         lib.checkoutBook(this, bookID);
     }
 
     //Return books
-    public void returnBook(String bookID){
+    public void returnBook(String bookID) throws InterruptedException {
         Book book = getBook(bookID);
 
         //Return to library
@@ -27,12 +27,12 @@ public class Visitor extends User {
     }
 
     //Reserve Book
-    public void reserveBook(String bookID){
+    public void reserveBook(String bookID) throws InterruptedException {
         lib.reserveBook(this, bookID);
     }
 
     //UnReserve Book
-    public void unReserveBook(String bookID){
+    public void unReserveBook(String bookID) throws InterruptedException {
         lib.unReserveBook(this, bookID);
     }
 

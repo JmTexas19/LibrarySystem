@@ -6,22 +6,27 @@ public class Library implements FullLibraryIF {
     private ArrayList<Book> bookList = new ArrayList<>();
     private ArrayList<ObserverIF> observerList = new ArrayList<>();
     private BookFactory bookFactory = new BookFactory();
+    private ReadWriteLock lockManager = new ReadWriteLock();
 
     //Get book from library
-    private Book getBook(String bookID) {
+    private Book getBook(String bookID) throws InterruptedException {
+        lockManager.readLock(); //Lock
+
         for (Book b : bookList) {
             if (bookID.equals(b.bookID)) {
+                lockManager.done(); //Release Lock
                 return b;
             }
         }
 
         //No book with that ID found
+        lockManager.done();
         System.out.println("No book with that ID found");
         return null;
     }
 
     //Get book checked out by visitors
-    public void checkoutBook(User u, String bookID){
+    public void checkoutBook(User u, String bookID) throws InterruptedException {
         Book book = getBook(bookID);
 
         if(book != null){
@@ -34,7 +39,7 @@ public class Library implements FullLibraryIF {
     }
 
     //Receive books from users
-    public void receiveBook(User u, String bookID){
+    public void receiveBook(User u, String bookID) throws InterruptedException {
         Book book = getBook(bookID);
 
         if(book != null){
@@ -55,7 +60,7 @@ public class Library implements FullLibraryIF {
     }
 
     //Reserve Book
-    public void reserveBook(User u, String bookID){
+    public void reserveBook(User u, String bookID) throws InterruptedException {
         Book book = getBook(bookID);
 
         //Reserve
@@ -77,7 +82,7 @@ public class Library implements FullLibraryIF {
     }
 
     //UnReserve Book
-    public void unReserveBook(User u, String bookID){
+    public void unReserveBook(User u, String bookID) throws InterruptedException {
         Book book = getBook(bookID);
 
         if(book != null && u.reserveList.contains(book)){
@@ -89,7 +94,6 @@ public class Library implements FullLibraryIF {
             System.out.println("No book with that ID found or book isn't reserved");
         }
     }
-
 
     //Create Book
     public void createBook(String type, String name, String author, String year) {
@@ -108,7 +112,7 @@ public class Library implements FullLibraryIF {
     }
 
     //Remove Book
-    public void removeBook(String bookID){
+    public void removeBook(String bookID) throws InterruptedException {
         Book book = getBook(bookID);
 
         if(book != null){
@@ -120,10 +124,16 @@ public class Library implements FullLibraryIF {
     }
 
     //Edit Book
-    public void editBook(String bookID){
+    public void editBook(String bookID) throws InterruptedException {
+        //Get book
         Book book = getBook(bookID);
 
+        //Lock
+        lockManager.writeLock(); //Lock
+
+        //Edit Book if not null
         if(book != null){
+            System.out.println("Editing book " + book.name);
             Scanner scanner = new Scanner(System.in);
             String name, author, year;
             //Get each attribute of book
@@ -145,6 +155,9 @@ public class Library implements FullLibraryIF {
         else{
             System.out.println("No book with that ID found");
         }
+
+        //Unlock
+        lockManager.done();
     }
 
     //Search Books
@@ -168,7 +181,7 @@ public class Library implements FullLibraryIF {
     }
 
     //MAIN
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         //Test stuff here
         Library lib = new Library();
 
@@ -199,6 +212,11 @@ public class Library implements FullLibraryIF {
         v.reserveBook("4");
         v.unReserveBook("4");
 
+        //Test Read/Write Lock
+        lib.lockManager.readLock();
         librarian.editBook("1");
+        lib.lockManager.done();
+
+        librarian.editBook("2");
     }
 }
