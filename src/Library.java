@@ -215,8 +215,5 @@ public class Library implements FullLibraryIF {
         //Test Read/Write Lock
         lib.lockManager.readLock();
         librarian.editBook("1");
-        lib.lockManager.done();
-
-        librarian.editBook("2");
     }
 }
