@@ -239,43 +239,4 @@ public class Library implements FullLibraryIF {
         resultsList.sort(Comparator.comparing(o -> o.name));
         return resultsList;
     }
-
-    //MAIN
-    public static void main(String[] args) throws InterruptedException {
-        //Test stuff here
-        Library lib = new Library();
-
-        //Import books with Dynamic Linkage pattern
-        AbstractLoadInventory inventory = new LoadableInventory();
-        inventory.setLibrary(lib);
-        inventory.startImport();
-
-        Visitor v = new Visitor(lib);
-        Visitor v2 = new Visitor(lib);
-
-        v.checkoutBook("1");
-        v.checkoutBook("4");
-        v.checkoutBook("7");
-        v.checkoutBook("3");
-
-        lib.searchLibrary("Marvel");
-        v.returnBook("1");
-        v.returnBook("3");
-        v.returnBook("6");
-
-        Librarian librarian = new Librarian(lib);
-        librarian.createBook("Textbook", "Calculus 3", "Bob Barker", "2006");
-        librarian.removeBook("8");
-        librarian.removeBook("9");
-
-        v2.checkoutBook("4");
-        v.reserveBook("4");
-        v.unReserveBook("4");
-
-        //Test Read/Write Lock (Uncomment to test)
-//        lib.lockManager.readLock();
-//        librarian.editBook("1");
-
-        //DEBUG TO SEE ALL VALUES IN LIBRARY FOR TESTING
-    }
 }
