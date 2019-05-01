@@ -32,9 +32,15 @@ public class Library implements FullLibraryIF {
     public void checkoutBook(User u, String bookID) throws InterruptedException {
         Book book = getBook(bookID);
 
-        if(book != null){
-            book.copies--;
-            u.checkoutList.add(book);
+        if(book != null && book.copies > 0){
+            if(!u.checkoutList.contains(book)) {
+                book.copies--;
+                u.checkoutList.add(book);
+                System.out.println("Checked Out " + book.name);
+            }
+            else{
+                System.out.println("You already have a copy of this book.");
+            }
         }
         else{
             System.out.println("No copies for book left");
@@ -45,8 +51,10 @@ public class Library implements FullLibraryIF {
     public void receiveBook(User u, String bookID) throws InterruptedException {
         Book book = getBook(bookID);
 
+        //If not null remove book from user list
         if(book != null){
             book.copies++;
+            u.checkoutList.remove(book);
 
             //Notify users who reserved book
             for(ObserverIF user : observerList){
@@ -56,6 +64,8 @@ public class Library implements FullLibraryIF {
                     }
                 }
             }
+
+            System.out.println(book.name + " Returned");
         }
         else{
             System.out.println("We don't store that book");

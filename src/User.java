@@ -16,7 +16,7 @@ public abstract class User implements ObserverIF{
 
     //Notify User
     public void notifyUser(String bookName){
-        System.out.println("The book " + bookName + " has copies available.");
+        System.out.println("TO: " + this + " The book " + bookName + " has copies available.");
     }
 
     public ArrayList<Book> getReserveList(){

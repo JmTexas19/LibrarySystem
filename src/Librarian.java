@@ -38,4 +38,19 @@ public class Librarian extends User{
     public void removeBook(String bookID) throws InterruptedException {
         lib.removeBook(bookID);
     }
+
+    //Reserve Book
+    public void reserveBook(String bookID) throws InterruptedException {
+        lib.reserveBook(this, bookID);
+    }
+
+    //UnReserve Book
+    public void unReserveBook(String bookID) throws InterruptedException {
+        lib.unReserveBook(this, bookID);
+    }
+
+    //View Book
+    public void viewBook(String bookID) throws InterruptedException {
+        lib.viewBook(bookID);
+    }
 }

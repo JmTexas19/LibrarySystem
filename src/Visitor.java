@@ -40,9 +40,4 @@ public class Visitor extends User {
     public void viewBook(String bookID) throws InterruptedException {
         lib.viewBook(bookID);
     }
-
-    //Notify User
-    public void notifyUser(String bookName){
-        System.out.println("The book " + bookName + " has copies available.");
-    }
 }
