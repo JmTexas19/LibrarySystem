@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class DemoLibrary {
@@ -20,9 +22,16 @@ public class DemoLibrary {
 
         //Check user input
         while(inputInt != 1 && inputInt != 2) {
-            //Choose User
-            System.out.println("Choose type of user:\n1:Visitor\n2:Librarian");
-            inputInt = scanner.nextInt();
+            //Handle Invalid Input
+            try {
+                //Choose User
+                System.out.println("Choose type of user:\n1:Visitor\n2:Librarian");
+                inputInt = scanner.nextInt();
+            }
+            catch(InputMismatchException e){
+                System.out.println("Invalid Input");
+                scanner.next();
+            }
         }
 
         //Visitor Options
@@ -39,7 +48,16 @@ public class DemoLibrary {
                         "6: Unreserve Book\n" +
                         "7: View My Books\n" +
                         "0: Quit\n");
-                inputInt = scanner.nextInt();
+
+                //Handle Invalid Input
+                try {
+                    inputInt = scanner.nextInt();
+                }
+                catch(InputMismatchException e){
+                    System.out.println("Invalid Input");
+                    inputInt = -1;
+                    scanner.next();
+                }
 
                 switch (inputInt){
                     case 1:
@@ -149,10 +167,21 @@ public class DemoLibrary {
                         "5: Reserve Book\n" +
                         "6: Unreserve Book\n" +
                         "7: View My Books\n" +
+                        "8: Edit Library Book\n" +
+                        "9: Add Library Book\n" +
                         "0: Quit\n");
-                inputInt = scanner.nextInt();
 
-                switch (inputInt){
+                //Handle Invalid Input
+                try {
+                    inputInt = scanner.nextInt();
+                }
+                catch(InputMismatchException e){
+                    System.out.println("Invalid Input");
+                    inputInt = -1;
+                    scanner.next();
+                }
+
+                switch (inputInt) {
                     case 1:
                         //Search
                         System.out.print("Enter search string: ");
@@ -160,24 +189,23 @@ public class DemoLibrary {
 
                         //Filters
                         System.out.print("Filter Comics? (y/n): ");
-                        if(scanner.next().equals("y")) library.filterComics = true;
+                        if (scanner.next().equals("y")) library.filterComics = true;
                         else library.filterComics = false;
                         System.out.print("Filter Novels? (y/n): ");
-                        if(scanner.next().equals("y")) library.filterNovels = true;
+                        if (scanner.next().equals("y")) library.filterNovels = true;
                         else library.filterNovels = false;
                         System.out.print("Filter Textbooks? (y/n): ");
-                        if(scanner.next().equals("y")) library.filterTextbooks = true;
+                        if (scanner.next().equals("y")) library.filterTextbooks = true;
                         else library.filterTextbooks = false;
 
                         //Print Results
                         ArrayList<Book> results = library.searchLibrary(searchStr);
                         System.out.println("Results:");
-                        if(!results.isEmpty()) {
+                        if (!results.isEmpty()) {
                             for (Book book : results) {
                                 System.out.println(book.bookID + ": " + book.name);
                             }
-                        }
-                        else{
+                        } else {
                             System.out.println("No Results");
                         }
                         break;
@@ -197,7 +225,7 @@ public class DemoLibrary {
                         //Return Book
                         //Print books for user
                         System.out.println("Checked Out Books:");
-                        for(Book book : l.checkoutList){
+                        for (Book book : l.checkoutList) {
                             System.out.println(book.bookID + ": " + book.name);
                         }
 
@@ -214,7 +242,7 @@ public class DemoLibrary {
                     case 6:
                         //Print books for user
                         System.out.println("Reserved Books:");
-                        for(Book book : l.reserveList){
+                        for (Book book : l.reserveList) {
                             System.out.println(book.bookID + ": " + book.name);
                         }
 
@@ -226,32 +254,48 @@ public class DemoLibrary {
                     case 7:
                         //Print books for user
                         System.out.println("Checked Out Books:");
-                        if(l.checkoutList != null) {
+                        if (l.checkoutList != null) {
                             for (Book book : l.checkoutList) {
                                 System.out.println(book.bookID + ": " + book.name);
                             }
-                        }
-                        else{
+                        } else {
                             System.out.println("No books checked out");
                         }
-                        if(!l.reserveList.isEmpty()){
+                        if (!l.reserveList.isEmpty()) {
                             //Print books for user
                             System.out.println("Reserved Books:");
-                            for(Book book : l.reserveList){
+                            for (Book book : l.reserveList) {
                                 System.out.println(book.bookID + ": " + book.name);
                             }
-                        }
-                        else{
+                        } else {
                             System.out.println("No books reserved");
+                        }
+                        break;
+                    case 8:
+                        //Edit Book in Library
+                        System.out.print("Enter bookID: ");
+                        bookID = scanner.next();
+                        l.editBook(bookID);
+                        break;
+                    case 9:
+                        try {
+                            //Add Library Book
+                            System.out.println("Enter Type");
+                            String type = scanner.next();
+                            System.out.println("Enter Name");
+                            String name = scanner.next();
+                            System.out.println("Enter Author");
+                            String author = scanner.next();
+                            System.out.println("Enter Year");
+                            String year = scanner.next();
+                            l.createBook(type, name, author, year);
+                        }
+                        catch(NoSuchElementException e){
+                            System.out.println("Cannot create a book of that type");
                         }
                         break;
                 }
             }
-
-
-
-
-
         }
     }
 }

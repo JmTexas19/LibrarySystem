@@ -120,7 +120,12 @@ public class Library implements FullLibraryIF {
             }
         }
 
-        if (!exists) this.bookList.add(bookFactory.createBook(type, name, author, year));
+        if (!exists) {
+            Book book = bookFactory.createBook(type, name, author, year);
+
+            if(book != null) this.bookList.add(book);
+            else System.out.println("Not a valid type of book, could not create.");
+        }
     }
 
     //Remove Book
@@ -160,9 +165,6 @@ public class Library implements FullLibraryIF {
             book.name = name;
             book.author = author;
             book.year = year;
-
-            //Close scanner
-            scanner.close();
         }
         else{
             System.out.println("No book with that ID found");
