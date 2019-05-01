@@ -5,5 +5,6 @@ public interface LibraryIF {
     void receiveBook(User u, String bookID) throws InterruptedException;
     void reserveBook(User u, String bookID) throws InterruptedException;
     void unReserveBook(User u, String bookID) throws InterruptedException;
+    void viewBook(String bookID) throws InterruptedException;
     ArrayList<Book> searchLibrary(String search);
 }

@@ -1,7 +1,13 @@
 import java.util.ArrayList;
-import java.util.Iterator;
 
-public class filterComic implements SearchFilterIF {
+public class FilterComic extends AbstractFilter {
+    public FilterComic(SearchFilterIF filter) {
+        super(filter);
+    }
+    public FilterComic(ArrayList<Book> resultsList){
+        super(resultsList);
+    }
+
     @Override
     public ArrayList<Book> filterResults(ArrayList<Book> resultsList) {
         //Remove Non-Comic Books

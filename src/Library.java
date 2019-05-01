@@ -7,6 +7,9 @@ public class Library implements FullLibraryIF {
     private ArrayList<ObserverIF> observerList = new ArrayList<>();
     private BookFactory bookFactory = new BookFactory();
     private ReadWriteLock lockManager = new ReadWriteLock();
+    boolean filterComics = false;
+    boolean filterNovels = false;
+    boolean filterTextbooks = false;
 
     //Get book from library
     private Book getBook(String bookID) throws InterruptedException {
@@ -103,7 +106,6 @@ public class Library implements FullLibraryIF {
         for (Book b : bookList) {
             if (b.type.equals(type) && b.name.equals(name) && b.author.equals(author) && b.year.equals(year)) {
                 b.copies++;
-                System.out.println("Book already exists, added copy");
                 exists = true;
             }
         }
@@ -160,6 +162,21 @@ public class Library implements FullLibraryIF {
         lockManager.done();
     }
 
+    //View Book
+    public void viewBook(String bookID) throws InterruptedException {
+        Book book = getBook(bookID);
+
+        //Print if not null
+        if(book != null){
+            System.out.println("Type: " + book.type);
+            System.out.println("Name: " + book.name);
+            System.out.println("Author: " + book.author);
+            System.out.println("Year: " + book.year);
+            System.out.println("Copies: " + book.copies);
+            System.out.println("ID: " + book.bookID);
+        }
+    }
+
     //Search Books
     public ArrayList<Book> searchLibrary(String search) {
         ArrayList<Book> resultsList = new ArrayList<>();
@@ -172,8 +189,35 @@ public class Library implements FullLibraryIF {
         }
 
         //Filters
-        ANDFilter filter = new ANDFilter(new filterComic());
-        resultsList = filter.filterResults(resultsList);
+        SearchFilterIF filter;
+        if(filterComics) {
+            filter = new FilterComic(resultsList);
+            resultsList = filter.filterResults(resultsList);
+            if(filterNovels){
+                filter = new FilterNovel(filter);
+                resultsList = filter.filterResults(resultsList);
+                if(filterTextbooks){
+                    filter = new FilterTextbook(filter);
+                    resultsList = filter.filterResults(resultsList);
+                }
+            }
+            else if(filterTextbooks){
+                filter = new FilterTextbook(filter);
+                resultsList = filter.filterResults(resultsList);
+            }
+        }
+        else if(filterNovels){
+            filter = new FilterNovel(resultsList);
+            resultsList = filter.filterResults(resultsList);
+            if(filterTextbooks){
+                filter = new FilterTextbook(filter);
+                resultsList = filter.filterResults(resultsList);
+            }
+        }
+        else if(filterTextbooks){
+            filter = new FilterTextbook(resultsList);
+            resultsList = filter.filterResults(resultsList);
+        }
 
         //Sort lists by name
         resultsList.sort(Comparator.comparing(o -> o.name));
