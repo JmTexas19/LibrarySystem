@@ -212,8 +212,10 @@ public class Library implements FullLibraryIF {
         v.reserveBook("4");
         v.unReserveBook("4");
 
-        //Test Read/Write Lock
-        lib.lockManager.readLock();
-        librarian.editBook("1");
+        //Test Read/Write Lock (Uncomment to test)
+//        lib.lockManager.readLock();
+//        librarian.editBook("1");
+
+        //DEBUG TO SEE ALL VALUES IN LIBRARY FOR TESTING
     }
 }

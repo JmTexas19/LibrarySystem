@@ -9,12 +9,12 @@ public class ANDFilter implements SearchFilterIF {
 
     @Override
     public ArrayList<Book> filterResults(ArrayList<Book> books) {
-        ArrayList<Book> filteredLaptops = books;
+        ArrayList<Book> filteredBooks = books;
 
         for (SearchFilterIF filter : filters) {
-            filteredLaptops = filter.filterResults(filteredLaptops);
+            filteredBooks = filter.filterResults(filteredBooks);
         }
 
-        return filteredLaptops;
+        return filteredBooks;
     }
 }
