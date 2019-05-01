@@ -29,6 +29,7 @@ public class DemoLibrary {
                 //Choose User
                 System.out.println("Choose type of user:\n1:Visitor\n2:Librarian\n3:Quit");
                 inputInt = scanner.nextInt();
+                scanner.nextLine();
             } catch (InputMismatchException e) {
                 System.out.println("Invalid Input");
                 scanner.next();
@@ -51,6 +52,7 @@ public class DemoLibrary {
                     //Handle Invalid Input
                     try {
                         inputInt = scanner.nextInt();
+                        scanner.nextLine();
                     } catch (InputMismatchException e) {
                         System.out.println("Invalid Input");
                         inputInt = -1;
@@ -88,13 +90,13 @@ public class DemoLibrary {
                         case 2:
                             //View Book
                             System.out.print("Enter bookID: ");
-                            bookID = scanner.next();
+                            bookID = scanner.nextLine();
                             v.viewBook(bookID);
                             break;
                         case 3:
                             //Checkout Book
                             System.out.print("Enter bookID: ");
-                            bookID = scanner.next();
+                            bookID = scanner.nextLine();
                             v.checkoutBook(bookID);
                             break;
                         case 4:
@@ -106,13 +108,13 @@ public class DemoLibrary {
                             }
 
                             System.out.print("Enter bookID: ");
-                            bookID = scanner.next();
+                            bookID = scanner.nextLine();
                             v.returnBook(bookID);
                             break;
                         case 5:
                             //Reserve Book
                             System.out.print("Enter bookID: ");
-                            bookID = scanner.next();
+                            bookID = scanner.nextLine();
                             v.reserveBook(bookID);
                             break;
                         case 6:
@@ -124,7 +126,7 @@ public class DemoLibrary {
 
                             //Unreserve Book
                             System.out.print("Enter bookID: ");
-                            bookID = scanner.next();
+                            bookID = scanner.nextLine();
                             v.unReserveBook(bookID);
                             break;
                         case 7:
@@ -166,6 +168,7 @@ public class DemoLibrary {
                     //Handle Invalid Input
                     try {
                         inputInt = scanner.nextInt();
+                        scanner.nextLine();
                     } catch (InputMismatchException e) {
                         System.out.println("Invalid Input");
                         inputInt = -1;
@@ -176,7 +179,7 @@ public class DemoLibrary {
                         case 1:
                             //Search
                             System.out.print("Enter search string: ");
-                            searchStr = scanner.next();
+                            searchStr = scanner.nextLine();
 
                             //Filters
                             System.out.print("Filter Comics? (y/n): ");
@@ -203,13 +206,13 @@ public class DemoLibrary {
                         case 2:
                             //View Book
                             System.out.print("Enter bookID: ");
-                            bookID = scanner.next();
+                            bookID = scanner.nextLine();
                             l.viewBook(bookID);
                             break;
                         case 3:
                             //Checkout Book
                             System.out.print("Enter bookID: ");
-                            bookID = scanner.next();
+                            bookID = scanner.nextLine();
                             l.checkoutBook(bookID);
                             break;
                         case 4:
@@ -221,13 +224,13 @@ public class DemoLibrary {
                             }
 
                             System.out.print("Enter bookID: ");
-                            bookID = scanner.next();
+                            bookID = scanner.nextLine();
                             l.returnBook(bookID);
                             break;
                         case 5:
                             //Reserve Book
                             System.out.print("Enter bookID: ");
-                            bookID = scanner.next();
+                            bookID = scanner.nextLine();
                             l.reserveBook(bookID);
                             break;
                         case 6:
@@ -239,7 +242,7 @@ public class DemoLibrary {
 
                             //Unreserve Book
                             System.out.print("Enter bookID: ");
-                            bookID = scanner.next();
+                            bookID = scanner.nextLine();
                             l.unReserveBook(bookID);
                             break;
                         case 7:
@@ -265,20 +268,20 @@ public class DemoLibrary {
                         case 8:
                             //Edit Book in Library
                             System.out.print("Enter bookID: ");
-                            bookID = scanner.next();
+                            bookID = scanner.nextLine();
                             l.editBook(bookID);
                             break;
                         case 9:
                             try {
                                 //Add Library Book
                                 System.out.println("Enter Type");
-                                String type = scanner.next();
+                                String type = scanner.nextLine();
                                 System.out.println("Enter Name");
-                                String name = scanner.next();
+                                String name = scanner.nextLine();
                                 System.out.println("Enter Author");
-                                String author = scanner.next();
+                                String author = scanner.nextLine();
                                 System.out.println("Enter Year");
-                                String year = scanner.next();
+                                String year = scanner.nextLine();
                                 l.createBook(type, name, author, year);
                             } catch (NoSuchElementException e) {
                                 System.out.println("Cannot create a book of that type");
