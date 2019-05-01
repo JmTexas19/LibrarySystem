@@ -11,7 +11,7 @@ public class FilterTextbook extends AbstractFilter {
     @Override
     public ArrayList<Book> filterResults(ArrayList<Book> resultsList) {
         //Remove Non-Textbook Books
-        resultsList.removeIf(book -> !book.type.equals("Textbook"));
+        resultsList.removeIf(book -> book.type.equals("Textbook"));
 
         return resultsList;
     }

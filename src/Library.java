@@ -219,6 +219,10 @@ public class Library implements FullLibraryIF {
             resultsList = filter.filterResults(resultsList);
         }
 
+        filterComics = false;
+        filterNovels = false;
+        filterTextbooks = false;
+
         //Sort lists by name
         resultsList.sort(Comparator.comparing(o -> o.name));
         return resultsList;
